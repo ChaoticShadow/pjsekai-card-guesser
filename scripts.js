@@ -214,11 +214,11 @@ function clearCanvas() {
 function revealCorrectCard(card) {
   const cardInfo = document.getElementById("card-info");
 
-  const { prefix, character } = card;
+  const { prefix, character, assetbundleName, stub } = card;
   cardInfo.innerText = `${character} - ${prefix}`;
 
   clearCanvas();
-  updateCanvas(card.assetbundleName, card.stub, true);
+  updateCanvas(assetbundleName, stub, true);
 }
 
 function clearCorrectCard() {
