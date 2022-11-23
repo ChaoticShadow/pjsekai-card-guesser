@@ -61,7 +61,7 @@ class Game {
 
   guess(guess) {
     const isCorrect =
-      guess.toLowerCase() === this.#currentCard.character.toLowerCase();
+      guess.toLowerCase().trim() === this.#currentCard.character.toLowerCase();
 
     this.#totalGuesses++;
     if (isCorrect) this.#correctGuesses++;
@@ -93,7 +93,7 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.0.4";
+  document.getElementById("version").innerText = "v0.0.5";
 
   const game = new Game();
   await game.init();
