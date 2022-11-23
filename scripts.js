@@ -56,11 +56,12 @@ class Game {
         prefix,
         assetbundleName,
       }));
-    this.#currentCard = this.getNextCard();
+    this.getNextCard();
   }
 
   guess(guess) {
-    const isCorrect = guess.toLowerCase() === this.#currentCard.character.toLowerCase();
+    const isCorrect =
+      guess.toLowerCase() === this.#currentCard.character.toLowerCase();
 
     this.#totalGuesses++;
     if (isCorrect) this.#correctGuesses++;
@@ -69,6 +70,7 @@ class Game {
   }
 
   getCurrentCard() {
+    console.log(this.#currentCard);
     return this.#currentCard;
   }
 
@@ -77,7 +79,9 @@ class Game {
 
     const idx = Math.floor(Math.random() * numOfCards);
 
-    return this.#cards[idx];
+    this.#currentCard = this.#cards[idx];
+
+    return this.#currentCard;
   }
 
   getGameStats() {
@@ -89,7 +93,7 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = 'v0.0.3';
+  document.getElementById("version").innerText = "v0.0.4";
 
   const game = new Game();
   await game.init();
@@ -99,7 +103,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const guessBtn = document.getElementById("guess-btn");
   const skipBtn = document.getElementById("skip-btn");
   const nextBtn = document.getElementById("next-btn");
-
 
   guessBtn.addEventListener("click", () => {
     const guess = guessInput.value;
@@ -195,14 +198,14 @@ function clearCanvas() {
 
 function revealCorrectCard(card) {
   const cardInfo = document.getElementById("card-info");
-  
+
   const { prefix, character } = card;
   cardInfo.innerText = `${character} - ${prefix}`;
 }
 
 function clearCorrectCard() {
   const cardInfo = document.getElementById("card-info");
-  cardInfo.innerText = '';
+  cardInfo.innerText = "";
 }
 
 function getRandomInt(min, max) {
