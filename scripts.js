@@ -89,6 +89,8 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  document.getElementById("version").innerText = 'v0.0.3';
+
   const game = new Game();
   await game.init();
   updateCanvas(game.getCurrentCard().assetbundleName);
@@ -166,8 +168,8 @@ function updateCanvas(assetBundleName) {
     isTrained === 0 ? "card_normal" : "card_after_training"
   }.png`;
   image.addEventListener("load", () => {
-    const height = getRandomInt(10, 75);
-    const width = getRandomInt(10, 75);
+    const height = getRandomInt(50, 150);
+    const width = getRandomInt(50, 150);
     const xOffset = getRandomInt(0, 940 - width);
     const yOffset = getRandomInt(0, 530 - height);
 
@@ -177,10 +179,10 @@ function updateCanvas(assetBundleName) {
       yOffset,
       width,
       height,
-      (300 - width * 3) / 2,
-      (300 - height * 3) / 2,
-      width * 3,
-      height * 3
+      (300 - width * 2) / 2,
+      (300 - height * 2) / 2,
+      width * 2,
+      height * 2
     );
   });
 }
