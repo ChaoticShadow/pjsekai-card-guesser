@@ -78,7 +78,10 @@ class Game {
     const idx = Math.floor(Math.random() * numOfCards);
     const isTrained = getRandomInt(0, 2);
 
-    this.#currentCard = { ...this.#cards[idx], stub: isTrained === 0 ? "card_normal" : "card_after_training" };
+    this.#currentCard = {
+      ...this.#cards[idx],
+      stub: isTrained === 0 ? "card_normal" : "card_after_training",
+    };
 
     return this.#currentCard;
   }
@@ -92,7 +95,7 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.0.8";
+  document.getElementById("version").innerText = "v0.0.9";
 
   const game = new Game();
   await game.init();
@@ -160,7 +163,7 @@ function updateStats(correctGuesses, totalGuesses) {
   ).innerText = `${correctGuesses}/${totalGuesses}`;
 }
 
-function updateCanvas(assetBundleName) {
+function updateCanvas(assetBundleName, full = false) {
   const canvas = document.getElementById("canvas");
   const context = canvas.getContext("2d");
 
@@ -170,21 +173,36 @@ function updateCanvas(assetBundleName) {
     isTrained === 0 ? "card_normal" : "card_after_training"
   }.png`;
   image.addEventListener("load", () => {
-    const height = getRandomInt(50, 150);
-    const width = getRandomInt(50, 150);
-    const xOffset = getRandomInt(0, 940 - width);
-    const yOffset = getRandomInt(0, 530 - height);
+    let width, height, xOffset, yOffset;
+    let dWidth, dHeight;
 
+    if (full) {
+      height = 530;
+      width = 940;
+      xOffset = 0;
+      yOffset = 0;
+
+      dWidth = canvas.width;
+      dHeight = height * canvas.width / width;
+    } else {
+      width = getRandomInt(50, 150);
+      height = getRandomInt(50, 150);
+      xOffset = getRandomInt(0, 940 - width);
+      yOffset = getRandomInt(0, 530 - height);
+
+      dWidth = width * 2;
+      dHeight = height * 2;
+    }
     context.drawImage(
       image,
       xOffset,
       yOffset,
       width,
       height,
-      (300 - width * 2) / 2,
-      (300 - height * 2) / 2,
-      width * 2,
-      height * 2
+      (canvas.width - dWidth) / 2,
+      (canvas.height - dHeight) / 2,
+      dWidth,
+      dHeight
     );
   });
 }
@@ -200,6 +218,9 @@ function revealCorrectCard(card) {
 
   const { prefix, character } = card;
   cardInfo.innerText = `${character} - ${prefix}`;
+
+  clearCanvas();
+  updateCanvas(card.assetbundleName, true);
 }
 
 function clearCorrectCard() {
