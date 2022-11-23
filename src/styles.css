@@ -1,0 +1,32 @@
+body {
+  margin: auto;
+  max-width: 720px;
+}
+
+#canvas {
+  display: block;
+  margin: auto;
+}
+
+#input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+#input-wrapper > button {
+  padding: 0.5em 1.5em;
+}
+
+#status {
+  text-align: center;
+  font-weight: bold;
+}
+
+h1,
+#card-info,
+#stats,
+#version {
+  text-align: center;
+}
