@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   nextBtn.addEventListener("click", () => {
     updateStatus("");
+    clearCorrectCard();
     const nextCard = game.getNextCard();
     clearCanvas();
     updateCanvas(nextCard.assetbundleName);
@@ -195,6 +196,11 @@ function revealCorrectCard(card) {
   
   const { prefix, character } = card;
   cardInfo.innerText = `${character} - ${prefix}`;
+}
+
+function clearCorrectCard() {
+  const cardInfo = document.getElementById("card-info");
+  cardInfo.innerText = '';
 }
 
 function getRandomInt(min, max) {
