@@ -50,8 +50,7 @@ class Game {
           card.cardRarityType !== "rarity_1" &&
           card.cardRarityType !== "rarity_2"
       )
-      .map(({ id, characterId, prefix, assetbundleName }) => ({
-        id,
+      .map(({ characterId, prefix, assetbundleName }) => ({
         character: Game.idToCharacterMap[characterId],
         prefix,
         assetbundleName,
@@ -70,7 +69,6 @@ class Game {
   }
 
   getCurrentCard() {
-    console.log(this.#currentCard);
     return this.#currentCard;
   }
 
@@ -78,8 +76,9 @@ class Game {
     const numOfCards = this.#cards.length;
 
     const idx = Math.floor(Math.random() * numOfCards);
+    const isTrained = getRandomInt(0, 2);
 
-    this.#currentCard = this.#cards[idx];
+    this.#currentCard = { ...this.#cards[idx], stub: isTrained === 0 ? "card_normal" : "card_after_training" };
 
     return this.#currentCard;
   }
@@ -93,7 +92,7 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.0.5";
+  document.getElementById("version").innerText = "v0.0.6";
 
   const game = new Game();
   await game.init();
