@@ -1,33 +1,62 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Sekai Card Guesser</title>
-<!-- 
+    <title>Sekai Card Guessing League Trainer</title>
+    <!-- 
   <link rel="icon" href="/favicon.ico">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png"> -->
 
-  <link rel="stylesheet" href="styles.css">
-</head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<body>
-  <h1>Card Guesser</h1>
-  <canvas id="canvas" width="300" height="300"></canvas>
-  <div id="input-wrapper">
-    <input id="guess-input">
-    <button id="guess-btn">Guess</button>
-    <button id="skip-btn">Give up</button>
-    <button id="next-btn" disabled>Next</button>
-  </div>
-  <p id="status"></p>
-  <p id="card-info"></p>
-  <p id="stats"></p>
-  <p id="version"></p>
+  <body>
+    <h1 id="header">Card Guessing League Trainer</h1>
+    <canvas id="canvas" width="300" height="300"></canvas>
+    <div id="input-wrapper">
+      <input id="guess-input" />
+      <button id="guess-btn">Guess</button>
+      <button id="skip-btn">Give up</button>
+      <button id="next-btn" disabled>Next</button>
+    </div>
+    <p id="status"></p>
+    <p id="card-info"></p>
+    <p id="stats"></p>
+    <section>
+      <p>
+        To play, simply enter the given (first) name of the character that the
+        card is associated to. Then press guess. You can skip the current card
+        by pressing the "give up" button. After a successful guess or a skip,
+        the card's character and name is given. Then press the next button to
+        start the next round of guessing!
+      </p>
+      <p>
+        The images are randomly generated crops ranging from 50px to 150px in
+        heights and widths.
+      </p>
+    </section>
+    <section>
+      <h2>Card Guessing League</h2>
+      <p>
+        "Card Guessing League" is a game held every weekend where players race
+        to guess a card correctly. Try our your skills against other players!
+      </p>
+      <p>
+        Read
+        <a
+          href="https://docs.google.com/document/d/1PJ5sZirp0tvuliTgNr_4LSBUZHdepKewvbB53bcOqhw/edit?usp=sharing"
+          >this Google doc</a
+        >
+        for more info.
+      </p>
+    </section>
+    <hr />
+    <p id="version"></p>
 
-  <script src="scripts.js"></script>
-</body>
+    <script src="scripts.js"></script>
+  </body>
 </html>

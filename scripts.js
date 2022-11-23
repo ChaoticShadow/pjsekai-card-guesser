@@ -92,7 +92,7 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.0.6";
+  document.getElementById("version").innerText = "v0.0.7";
 
   const game = new Game();
   await game.init();

@@ -3,9 +3,23 @@ body {
   max-width: 720px;
 }
 
+@media screen and (max-width:720px) {
+  body {
+    margin: 0 1em;
+  }
+}
+
+#banner {
+  display: block;
+  max-width: 100%;
+  margin: 32px auto;
+}
+
 #canvas {
   display: block;
-  margin: auto;
+  margin: 16px auto;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
 #input-wrapper {
@@ -24,7 +38,6 @@ body {
   font-weight: bold;
 }
 
-h1,
 #card-info,
 #stats,
 #version {
