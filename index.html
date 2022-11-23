@@ -20,7 +20,35 @@
     <div id="game-wrapper">
       <canvas id="canvas" width="300" height="300"></canvas>
       <div id="input-wrapper">
-        <input id="guess-input" />
+        <input id="guess-input" list="guess-opts" />
+        <datalist id="guess-opts">
+          <option value="Ichika"></option>
+          <option value="Saki"></option>
+          <option value="Honami"></option>
+          <option value="Shiho"></option>
+          <option value="Minori"></option>
+          <option value="Haruka"></option>
+          <option value="Airi"></option>
+          <option value="Shizuku"></option>
+          <option value="Kohane"></option>
+          <option value="An"></option>
+          <option value="Akito"></option>
+          <option value="Toya"></option>
+          <option value="Tsukasa"></option>
+          <option value="Emu"></option>
+          <option value="Nene"></option>
+          <option value="Rui"></option>
+          <option value="Kanade"></option>
+          <option value="Mafuyu"></option>
+          <option value="Ena"></option>
+          <option value="Mizuki"></option>
+          <option value="Miku"></option>
+          <option value="Rin"></option>
+          <option value="Len"></option>
+          <option value="Luka"></option>
+          <option value="MEIKO"></option>
+          <option value="KAITO"></option>
+        </datalist>
         <button id="guess-btn">Guess</button>
         <button id="skip-btn">Give up</button>
         <button id="next-btn" disabled>Next</button>
@@ -60,6 +88,9 @@
     <hr />
     <p id="version"></p>
 
-    <script src="scripts.js"></script>
+    <script type="module" src="scripts/helpers.js"></script>
+    <script type="module" src="scripts/game.js"></script>
+    <script type="module" src="scripts/canvas.js"></script>
+    <script type="module" src="scripts/main.js"></script>
   </body>
 </html>
