@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Sekai Card Guessing League Trainer</title>
+    <title>Card Guessing League Trainer</title>
     <!-- 
   <link rel="icon" href="/favicon.ico">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -16,16 +16,20 @@
 
   <body>
     <h1 id="header">Card Guessing League Trainer</h1>
-    <canvas id="canvas" width="300" height="300"></canvas>
-    <div id="input-wrapper">
-      <input id="guess-input" />
-      <button id="guess-btn">Guess</button>
-      <button id="skip-btn">Give up</button>
-      <button id="next-btn" disabled>Next</button>
+    <img id="logo" src="logo.png" />
+    <div id="game-wrapper">
+      <canvas id="canvas" width="300" height="300"></canvas>
+      <div id="input-wrapper">
+        <input id="guess-input" />
+        <button id="guess-btn">Guess</button>
+        <button id="skip-btn">Give up</button>
+        <button id="next-btn" disabled>Next</button>
+      </div>
+      <p id="status"></p>
+      <p id="card-info"></p>
+      <div id="card-img-wrapper"></div>
+      <p id="stats"></p>
     </div>
-    <p id="status"></p>
-    <p id="card-info"></p>
-    <p id="stats"></p>
     <section>
       <p>
         To play, simply enter the given (first) name of the character that the

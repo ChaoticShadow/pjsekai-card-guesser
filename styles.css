@@ -1,25 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
+
 body {
   margin: auto;
   max-width: 720px;
+  background-image: url("background.jpg");
+  background-repeat: repeat;
+  color: lightgrey;
+  font-family: 'Lexend Deca';
 }
 
 @media screen and (max-width:720px) {
   body {
-    margin: 0 1em;
+    margin: 0 2em;
   }
 }
 
-#banner {
+#header {
+  display: none;
+}
+
+#logo {
   display: block;
   max-width: 100%;
   margin: 32px auto;
 }
 
+#game-wrapper {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  margin: 16px -1em;
+  padding: 1em;
+}
+
 #canvas {
   display: block;
-  margin: 16px auto;
-  border: 1px solid black;
-  border-radius: 5px;
+  margin: auto;
 }
 
 #input-wrapper {
