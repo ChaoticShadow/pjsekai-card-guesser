@@ -95,11 +95,12 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.0.9";
+  document.getElementById("version").innerText = "v0.0.10";
 
   const game = new Game();
   await game.init();
-  updateCanvas(game.getCurrentCard().assetbundleName);
+  const {assetbundleName, stub } = game.getCurrentCard();
+  updateCanvas(assetbundleName, stub, false);
 
   const guessInput = document.getElementById("guess-input");
   const guessBtn = document.getElementById("guess-btn");
@@ -141,9 +142,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   nextBtn.addEventListener("click", () => {
     updateStatus("");
     clearCorrectCard();
-    const nextCard = game.getNextCard();
+    const { assetbundleName, stub } = game.getNextCard();
     clearCanvas();
-    updateCanvas(nextCard.assetbundleName);
+    updateCanvas(assetbundleName, stub, false);
 
     guessInput.value = "";
     guessInput.disabled = false;
@@ -163,15 +164,12 @@ function updateStats(correctGuesses, totalGuesses) {
   ).innerText = `${correctGuesses}/${totalGuesses}`;
 }
 
-function updateCanvas(assetBundleName, full = false) {
+function updateCanvas(assetBundleName, stub, full = false) {
   const canvas = document.getElementById("canvas");
   const context = canvas.getContext("2d");
 
   const image = new Image();
-  const isTrained = getRandomInt(0, 2);
-  image.src = `https://assets.pjsek.ai/file/pjsekai-assets/startapp/character/member_small/${assetBundleName}/${
-    isTrained === 0 ? "card_normal" : "card_after_training"
-  }.png`;
+  image.src = `https://assets.pjsek.ai/file/pjsekai-assets/startapp/character/member_small/${assetBundleName}/${stub}.png`;
   image.addEventListener("load", () => {
     let width, height, xOffset, yOffset;
     let dWidth, dHeight;
@@ -220,7 +218,7 @@ function revealCorrectCard(card) {
   cardInfo.innerText = `${character} - ${prefix}`;
 
   clearCanvas();
-  updateCanvas(card.assetbundleName, true);
+  updateCanvas(card.assetbundleName, card.stub, true);
 }
 
 function clearCorrectCard() {
