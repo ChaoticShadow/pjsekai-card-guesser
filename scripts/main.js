@@ -1,14 +1,20 @@
 import Game from "./game.js";
-import GameCanvas  from "./canvas.js";
+import GameCanvas from "./canvas.js";
+import GameInfo, { GuessStatus } from "./info.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.0.12";
+  document.getElementById("version").innerText = "v0.0.13";
 
   const game = new Game();
   const gameCanvas = new GameCanvas(document.getElementById("canvas"));
+  const gameInfo = new GameInfo(
+    document.getElementById("status"),
+    document.getElementById("card-info"),
+    document.getElementById("stats")
+  );
 
   await game.init();
-  const {assetbundleName, stub } = game.getCurrentCard();
+  const { assetbundleName, stub } = game.getCurrentCard();
   gameCanvas.drawCardCropped(assetbundleName, stub);
 
   const guessInput = document.getElementById("guess-input");
@@ -18,25 +24,68 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   guessBtn.addEventListener("click", () => {
     const guess = guessInput.value;
-    handleGuess(game, guess, () =>handleAfterGuessOrSkip(game, gameCanvas, guessInput, guessBtn, skipBtn, nextBtn));
+    if (guess.length <= 0) {
+      return;
+    }
+
+    const isCorrect = game.guess(guess);
+    gameInfo.updateGuessStatus(
+      isCorrect ? GuessStatus.CORRECT : GuessStatus.INCORRECT
+    );
+
+    handleAfterGuessOrSkip(
+      game,
+      gameCanvas,
+      gameInfo,
+      guessInput,
+      guessBtn,
+      skipBtn,
+      nextBtn
+    );
   });
 
   guessInput.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
       const guess = guessInput.value;
-      handleGuess(game, guess, () => handleAfterGuessOrSkip(game, gameCanvas, guessInput, guessBtn, skipBtn, nextBtn));
+      if (guess.length <= 0) {
+        return;
+      }
+
+      const isCorrect = game.guess(guess);
+      gameInfo.updateGuessStatus(
+        isCorrect ? GuessStatus.CORRECT : GuessStatus.INCORRECT
+      );
+
+      handleAfterGuessOrSkip(
+        game,
+        gameCanvas,
+        gameInfo,
+        guessInput,
+        guessBtn,
+        skipBtn,
+        nextBtn
+      );
     }
   });
 
   skipBtn.addEventListener("click", () => {
-    updateStatus("Skipped");
     game.skip();
-    handleAfterGuessOrSkip(game, gameCanvas, guessInput, guessBtn, skipBtn, nextBtn);
+    gameInfo.updateGuessStatus(GuessStatus.SKIPPED);
+
+    handleAfterGuessOrSkip(
+      game,
+      gameCanvas,
+      gameInfo,
+      guessInput,
+      guessBtn,
+      skipBtn,
+      nextBtn
+    );
   });
 
   nextBtn.addEventListener("click", () => {
-    updateStatus("");
-    clearCorrectCard();
+    gameInfo.clearGuessStatus();
+    gameInfo.clearCorrectCard();
     game.next();
     const { assetbundleName, stub } = game.getCurrentCard();
     gameCanvas.drawCardCropped(assetbundleName, stub);
@@ -49,18 +98,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-function handleGuess(game, guess, postGuess) {
-  if (guess.length <= 0) {
-    return;
-  }
-
-  const isCorrect = game.guess(guess);
-  updateStatus(isCorrect ? "Correct" : "Wrong");
-  postGuess();
-}
-
-function handleAfterGuessOrSkip(game, gameCanvas, guessInput, guessBtn, skipBtn, nextBtn) {
-  revealCorrectCard(game.getCurrentCard());
+function handleAfterGuessOrSkip(
+  game,
+  gameCanvas,
+  gameInfo,
+  guessInput,
+  guessBtn,
+  skipBtn,
+  nextBtn
+) {
+  gameInfo.revealCorrectCard(game.getCurrentCard());
   const { assetbundleName, stub } = game.getCurrentCard();
   gameCanvas.drawCard(assetbundleName, stub);
 
@@ -70,27 +117,5 @@ function handleAfterGuessOrSkip(game, gameCanvas, guessInput, guessBtn, skipBtn,
   nextBtn.disabled = false;
 
   const { correctGuesses, totalGuesses } = game.getGameStats();
-  updateStats(correctGuesses, totalGuesses);
-}
-
-function updateStatus(status) {
-  document.getElementById("status").innerText = status;
-}
-
-function updateStats(correctGuesses, totalGuesses) {
-  document.getElementById(
-    "stats"
-  ).innerText = `${correctGuesses}/${totalGuesses}`;
-}
-
-function revealCorrectCard(card) {
-  const cardInfo = document.getElementById("card-info");
-
-  const { prefix, character } = card;
-  cardInfo.innerText = `${character} - ${prefix}`;
-}
-
-function clearCorrectCard() {
-  const cardInfo = document.getElementById("card-info");
-  cardInfo.innerText = "";
+  gameInfo.updateGameStats(correctGuesses, totalGuesses);
 }
