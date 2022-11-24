@@ -3,7 +3,7 @@
 body {
   margin: auto;
   max-width: 720px;
-  background-image: url("background.jpg");
+  background-image: url("./assets/background.jpg");
   background-repeat: repeat;
   color: lightgrey;
   font-family: 'Lexend Deca';
@@ -55,6 +55,7 @@ body {
 
 #card-info,
 #stats,
-#version {
+#version,
+#repo-link {
   text-align: center;
 }
