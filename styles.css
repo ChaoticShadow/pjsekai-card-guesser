@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap");
 
 body {
   margin: auto;
@@ -6,10 +6,10 @@ body {
   background-image: url("./assets/background.jpg");
   background-repeat: repeat;
   color: lightgrey;
-  font-family: 'Lexend Deca';
+  font-family: "Lexend Deca";
 }
 
-@media screen and (max-width:720px) {
+@media screen and (max-width: 720px) {
   body {
     margin: 0 2em;
   }
@@ -28,8 +28,10 @@ body {
 #game-wrapper {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 5px;
-  margin: 16px -1em;
+  margin: 1em -1em;
   padding: 1em;
+  display: grid;
+  grid-gap: 1em;
 }
 
 #canvas {
@@ -48,14 +50,19 @@ body {
   padding: 0.5em 1.5em;
 }
 
-#status {
+#info-wrapper {
+  display: grid;
+  grid-gap: 1em;
+}
+
+#info-wrapper > span {
   text-align: center;
+}
+
+#status {
   font-weight: bold;
 }
 
-#card-info,
-#stats,
-#version,
-#repo-link {
+footer p {
   text-align: center;
 }

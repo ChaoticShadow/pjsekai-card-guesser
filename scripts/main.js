@@ -3,7 +3,7 @@ import GameCanvas from "./canvas.js";
 import GameInfo, { GuessStatus } from "./info.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.1.0";
+  document.getElementById("version").innerText = "v0.1.1";
 
   const game = new Game();
   const gameCanvas = new GameCanvas(document.getElementById("canvas"));
@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const guessBtn = document.getElementById("guess-btn");
   const skipBtn = document.getElementById("skip-btn");
   const nextBtn = document.getElementById("next-btn");
+
+  guessInput.value = "";
+  nextBtn.disabled = true;
 
   guessBtn.addEventListener("click", () => {
     const guess = guessInput.value;

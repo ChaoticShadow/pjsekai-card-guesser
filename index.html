@@ -53,9 +53,11 @@
         <button id="skip-btn">Give up</button>
         <button id="next-btn" disabled>Next</button>
       </div>
-      <p id="status"></p>
-      <p id="card-info"></p>
-      <p id="stats"></p>
+      <div id="info-wrapper">
+        <span id="status" style="display: none;"></span>
+        <span id="card-info" style="display: none;"></span>
+        <span id="stats"></span>
+      </div>
     </div>
     <section>
       <p>
@@ -79,19 +81,21 @@
       <p>
         Read
         <a
-          href="https://docs.google.com/document/d/1PJ5sZirp0tvuliTgNr_4LSBUZHdepKewvbB53bcOqhw/edit?usp=sharing"
+          href="https://docs.google.com/document/d/1PJ5sZirp0tvuliTgNr_4LSBUZHdepKewvbB53bcOqhw/edit"
           >this Google doc</a
         >
         for more info.
       </p>
     </section>
     <hr />
-    <p id="version"></p>
-    <p id="repo-link">
-      <a href="https://github.com/ChaoticShadow/pjsekai-card-guesser">
-        <img src="assets/github.png" />
-      </a>
-    </p>
+    <footer>
+      <p id="version">Version goes here.</p>
+      <p>
+        <a href="https://github.com/ChaoticShadow/pjsekai-card-guesser">
+          <img src="assets/github.png" />
+        </a>
+      </p>
+    </footer>
 
     <script type="module" src="scripts/helpers.js"></script>
     <script type="module" src="scripts/game.js"></script>

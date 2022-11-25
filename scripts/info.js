@@ -20,29 +20,36 @@ class GameInfo {
       case GuessStatus.CORRECT:
         this.#guessStatusElement.innerText = status;
         this.#guessStatusElement.style.color = "green";
+        this.#guessStatusElement.style.removeProperty("display");
         break;
       case GuessStatus.INCORRECT:
         this.#guessStatusElement.innerText = status;
         this.#guessStatusElement.style.color = "red";
+        this.#guessStatusElement.style.removeProperty("display");
         break;
       case GuessStatus.SKIPPED:
         this.#guessStatusElement.innerText = status;
         this.#guessStatusElement.style.color = "yellow";
+        this.#guessStatusElement.style.removeProperty("display");
         break;
     }
   }
 
   clearGuessStatus() {
+    this.#guessStatusElement.style.display = "none";
+    this.#guessStatusElement.style.removeProperty("color");
     this.#guessStatusElement.innerText = "";
-    this.#guessStatusElement.style.removeProperty('color');
   }
 
   revealCorrectCard(card) {
     const { prefix, character } = card;
+
     this.#correctCardElement.innerText = `${character} - ${prefix}`;
+    this.#correctCardElement.style.removeProperty("display");
   }
 
   clearCorrectCard() {
+    this.#correctCardElement.style.display = "none";
     this.#correctCardElement.innerText = "";
   }
 
