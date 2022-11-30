@@ -17,29 +17,49 @@ class GameCanvas {
     dWidth,
     dHeight
   ) {
-    this.#clear();
-
     const ctx = this.#canvas.getContext("2d");
-    ctx.font = "14px sans-serif";
-    ctx.fillStyle = "lightgrey";
-    ctx.fillText("Loading image...", 10, 20);
+    ctx.fillStyle = "dimgrey";
 
     const image = new Image();
+
+    image.addEventListener(
+      "loadstart",
+      () => {
+        this.#clear();
+        ctx.fillText("Loading image...", 10, 20);
+      },
+      { once: true }
+    );
+
+    image.addEventListener(
+      "loaderror",
+      () => {
+        this.#clear();
+        ctx.fillText("Failed to load image.", 10, 20);
+      },
+      { once: true }
+    );
+
+    image.addEventListener(
+      "load",
+      () => {
+        this.#clear();
+        ctx.drawImage(
+          image,
+          xOffset,
+          yOffset,
+          width,
+          height,
+          (this.#canvas.width - dWidth) / 2,
+          (this.#canvas.height - dHeight) / 2,
+          Math.min(dWidth, this.#canvas.width),
+          Math.min(dHeight, this.#canvas.height)
+        );
+      },
+      { once: true }
+    );
+
     image.src = `https://assets.pjsek.ai/file/pjsekai-assets/startapp/character/member_small/${assetBundleName}/${stub}.png`;
-    image.addEventListener("load", () => {
-      this.#clear();
-      ctx.drawImage(
-        image,
-        xOffset,
-        yOffset,
-        width,
-        height,
-        (this.#canvas.width - dWidth) / 2,
-        (this.#canvas.height - dHeight) / 2,
-        Math.min(dWidth, this.#canvas.width),
-        Math.min(dHeight, this.#canvas.height)
-      );
-    });
   }
 
   #clear() {
