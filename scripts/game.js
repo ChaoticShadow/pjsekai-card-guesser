@@ -50,16 +50,24 @@ class Game {
 
     this.#cards = data
       .filter(
-        (card) =>
-          card.cardRarityType !== "rarity_1" &&
-          card.cardRarityType !== "rarity_2"
+        ({ cardRarityType }) =>
+          cardRarityType !== "rarity_1" && cardRarityType !== "rarity_2"
       )
-      .map(({ characterId, cardRarityType, prefix, assetbundleName }) => ({
-        character: Game.idToCharacterMap[characterId],
-        cardRarityType,
-        prefix,
-        assetbundleName,
-      }));
+      .map(
+        ({
+          characterId,
+          cardRarityType,
+          prefix,
+          assetbundleName,
+          releaseAt,
+        }) => ({
+          character: Game.idToCharacterMap[characterId],
+          cardRarityType,
+          prefix,
+          assetbundleName,
+          releaseAt,
+        })
+      );
     this.next();
   }
 
@@ -80,8 +88,14 @@ class Game {
   next() {
     const numOfCards = this.#cards.length;
 
-    const idx = Math.floor(Math.random() * numOfCards);
-    const selectedCard = this.#cards[idx];
+    let idx;
+    let selectedCard;
+
+    do {
+      idx = Math.floor(Math.random() * numOfCards);
+      selectedCard = this.#cards[idx];
+    } while (selectedCard.releaseAt > Date.now());
+
     let stub = "card_normal";
     if (
       selectedCard.cardRarityType === "rarity_3" ||

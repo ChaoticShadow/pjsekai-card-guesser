@@ -7,9 +7,18 @@ class GameCanvas {
     this.#canvas = canvas;
   }
 
-  #draw(assetBundleName, stub, width, height, xOffset, yOffset, dWidth, dHeight) {
+  #draw(
+    assetBundleName,
+    stub,
+    width,
+    height,
+    xOffset,
+    yOffset,
+    dWidth,
+    dHeight
+  ) {
     const context = this.#canvas.getContext("2d");
-  
+
     const image = new Image();
     image.src = `https://assets.pjsek.ai/file/pjsekai-assets/startapp/character/member_small/${assetBundleName}/${stub}.png`;
     image.addEventListener("load", () => {
@@ -39,10 +48,19 @@ class GameCanvas {
     const yOffset = 0;
 
     const dWidth = this.#canvas.width;
-    const dHeight = height * this.#canvas.width / width;
+    const dHeight = (height * this.#canvas.width) / width;
 
     this.#clear();
-    this.#draw(assetBundleName, stub, width, height, xOffset, yOffset, dWidth, dHeight);
+    this.#draw(
+      assetBundleName,
+      stub,
+      width,
+      height,
+      xOffset,
+      yOffset,
+      dWidth,
+      dHeight
+    );
   }
 
   drawCardCropped(assetBundleName, stub) {
@@ -55,7 +73,16 @@ class GameCanvas {
     const dHeight = height * 2;
 
     this.#clear();
-    this.#draw(assetBundleName, stub, width, height, xOffset, yOffset, dWidth, dHeight);
+    this.#draw(
+      assetBundleName,
+      stub,
+      width,
+      height,
+      xOffset,
+      yOffset,
+      dWidth,
+      dHeight
+    );
   }
 }
 
