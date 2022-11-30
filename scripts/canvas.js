@@ -17,12 +17,18 @@ class GameCanvas {
     dWidth,
     dHeight
   ) {
-    const context = this.#canvas.getContext("2d");
+    this.#clear();
+
+    const ctx = this.#canvas.getContext("2d");
+    ctx.font = "14px sans-serif";
+    ctx.fillStyle = "lightgrey";
+    ctx.fillText("Loading image...", 10, 20);
 
     const image = new Image();
     image.src = `https://assets.pjsek.ai/file/pjsekai-assets/startapp/character/member_small/${assetBundleName}/${stub}.png`;
     image.addEventListener("load", () => {
-      context.drawImage(
+      this.#clear();
+      ctx.drawImage(
         image,
         xOffset,
         yOffset,
@@ -50,7 +56,6 @@ class GameCanvas {
     const dWidth = this.#canvas.width;
     const dHeight = (height * this.#canvas.width) / width;
 
-    this.#clear();
     this.#draw(
       assetBundleName,
       stub,
@@ -72,7 +77,6 @@ class GameCanvas {
     const dWidth = width * 2;
     const dHeight = height * 2;
 
-    this.#clear();
     this.#draw(
       assetBundleName,
       stub,

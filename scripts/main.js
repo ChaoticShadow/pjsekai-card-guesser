@@ -3,7 +3,7 @@ import GameCanvas from "./canvas.js";
 import GameInfo, { GuessStatus } from "./info.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.1.2";
+  document.getElementById("version").innerText = "v0.1.3";
 
   const game = new Game();
   const gameCanvas = new GameCanvas(document.getElementById("canvas"));
