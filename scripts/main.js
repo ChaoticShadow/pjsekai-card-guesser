@@ -3,14 +3,17 @@ import GameCanvas from "./canvas.js";
 import GameInfo, { GuessStatus } from "./info.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.1.4";
+  document.getElementById("version").innerText = "v0.1.5";
 
   const game = new Game();
-  const gameCanvas = new GameCanvas(document.getElementById("canvas"));
+  const gameCanvas = new GameCanvas(
+    document.getElementById("canvas"),
+    document.getElementById("canvas-status")
+  );
   const gameInfo = new GameInfo(
-    document.getElementById("status"),
+    document.getElementById("game-status"),
     document.getElementById("card-info"),
-    document.getElementById("stats")
+    document.getElementById("game-stats")
   );
 
   await game.init();

@@ -34,9 +34,24 @@ body {
   grid-gap: 1em;
 }
 
+#canvas-wrapper {
+  position: relative;
+  margin: auto;
+  width: 300px;
+}
+
 #canvas {
   display: block;
   margin: auto;
+}
+
+#canvas-status {
+  position: absolute;
+  top: 0;
+  height: 300px;
+  width: 300px;
+  font-size: 10px;
+  color: dimgray;
 }
 
 #input-wrapper {
@@ -59,7 +74,7 @@ body {
   text-align: center;
 }
 
-#status {
+#game-status {
   font-weight: bold;
 }
 

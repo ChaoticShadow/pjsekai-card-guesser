@@ -2,9 +2,11 @@ import { getRandomInt } from "./helpers.js";
 
 class GameCanvas {
   #canvas;
+  #status;
 
-  constructor(canvas) {
+  constructor(canvas, status) {
     this.#canvas = canvas;
+    this.#status = status;
   }
 
   #draw(
@@ -17,33 +19,27 @@ class GameCanvas {
     dWidth,
     dHeight
   ) {
-    const ctx = this.#canvas.getContext("2d");
-    ctx.fillStyle = "dimgrey";
+    this.#clear();
 
+    const ctx = this.#canvas.getContext("2d");
     const image = new Image();
 
     image.addEventListener(
       "loadstart",
-      () => {
-        this.#clear();
-        ctx.fillText("Loading image...", 10, 20);
-      },
+      () => (this.#status.innerText = "Loading image..."),
       { once: true }
     );
 
     image.addEventListener(
       "loaderror",
-      () => {
-        this.#clear();
-        ctx.fillText("Failed to load image.", 10, 20);
-      },
+      () => (this.#status.innerText = "Failed to load image."),
       { once: true }
     );
 
     image.addEventListener(
       "load",
       () => {
-        this.#clear();
+        this.#status.innerText = "";
         ctx.drawImage(
           image,
           xOffset,
@@ -65,6 +61,7 @@ class GameCanvas {
   #clear() {
     const ctx = this.#canvas.getContext("2d");
     ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
+    this.#status.innerText = "";
   }
 
   drawCard(assetBundleName, stub) {
