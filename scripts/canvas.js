@@ -20,21 +20,10 @@ class GameCanvas {
     dHeight
   ) {
     this.#clear();
+    this.#status.innerText = "Loading image..."
 
     const ctx = this.#canvas.getContext("2d");
     const image = new Image();
-
-    image.addEventListener(
-      "loadstart",
-      () => (this.#status.innerText = "Loading image..."),
-      { once: true }
-    );
-
-    image.addEventListener(
-      "loaderror",
-      () => (this.#status.innerText = "Failed to load image."),
-      { once: true }
-    );
 
     image.addEventListener(
       "load",
