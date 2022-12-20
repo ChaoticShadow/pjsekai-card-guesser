@@ -1,127 +1,151 @@
-import Game from "./game.js";
+import Game, { GameState } from "./game.js";
 import GameCanvas from "./canvas.js";
-import GameInfo, { GuessStatus } from "./info.js";
+import { createApp, reactive } from "https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.es.js?module";
 
-document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("version").innerText = "v0.1.6";
-
-  const game = new Game();
-  const gameCanvas = new GameCanvas(
-    document.getElementById("canvas"),
-    document.getElementById("canvas-status")
-  );
-  const gameInfo = new GameInfo(
-    document.getElementById("game-status"),
-    document.getElementById("card-info"),
-    document.getElementById("game-stats")
-  );
-
-  await game.init();
-  const { assetbundleName, stub } = game.getCurrentCard();
-  gameCanvas.drawCardCropped(assetbundleName, stub);
-
-  const guessInput = document.getElementById("guess-input");
-  const guessBtn = document.getElementById("guess-btn");
-  const skipBtn = document.getElementById("skip-btn");
-  const nextBtn = document.getElementById("next-btn");
-
-  guessInput.value = "";
-  nextBtn.disabled = true;
-
-  guessBtn.addEventListener("click", () => {
-    const guess = guessInput.value;
-    if (guess.length <= 0) {
-      return;
-    }
-
-    const isCorrect = game.guess(guess);
-    gameInfo.updateGuessStatus(
-      isCorrect ? GuessStatus.CORRECT : GuessStatus.INCORRECT
-    );
-
-    handleAfterGuessOrSkip(
-      game,
-      gameCanvas,
-      gameInfo,
-      guessInput,
-      guessBtn,
-      skipBtn,
-      nextBtn
-    );
-  });
-
-  guessInput.addEventListener("keyup", (event) => {
-    if (event.key === "Enter") {
-      const guess = guessInput.value;
-      if (guess.length <= 0) {
-        return;
-      }
-
-      const isCorrect = game.guess(guess);
-      gameInfo.updateGuessStatus(
-        isCorrect ? GuessStatus.CORRECT : GuessStatus.INCORRECT
-      );
-
-      handleAfterGuessOrSkip(
-        game,
-        gameCanvas,
-        gameInfo,
-        guessInput,
-        guessBtn,
-        skipBtn,
-        nextBtn
-      );
-    }
-  });
-
-  skipBtn.addEventListener("click", () => {
-    game.skip();
-    gameInfo.updateGuessStatus(GuessStatus.SKIPPED);
-
-    handleAfterGuessOrSkip(
-      game,
-      gameCanvas,
-      gameInfo,
-      guessInput,
-      guessBtn,
-      skipBtn,
-      nextBtn
-    );
-  });
-
-  nextBtn.addEventListener("click", () => {
-    gameInfo.clearGuessStatus();
-    gameInfo.clearCorrectCard();
-    game.next();
-    const { assetbundleName, stub } = game.getCurrentCard();
-    gameCanvas.drawCardCropped(assetbundleName, stub);
-
-    guessInput.value = "";
-    guessInput.disabled = false;
-    guessBtn.disabled = false;
-    skipBtn.disabled = false;
-    nextBtn.disabled = true;
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("version").innerText = "v0.2.0";
 });
 
-function handleAfterGuessOrSkip(
-  game,
-  gameCanvas,
-  gameInfo,
-  guessInput,
-  guessBtn,
-  skipBtn,
-  nextBtn
-) {
-  gameInfo.revealCorrectCard(game.getCurrentCard());
-  const { assetbundleName, stub } = game.getCurrentCard();
-  gameCanvas.drawCard(assetbundleName, stub);
+const game = new Game();
+const gameCanvas = new GameCanvas(
+  document.getElementById("canvas"),
+  document.getElementById("canvas-status")
+);
 
-  guessInput.disabled = true;
-  guessBtn.disabled = true;
-  skipBtn.disabled = true;
-  nextBtn.disabled = false;
+await game.init();
 
-  const { correctGuesses, totalGuesses } = game.getGameStats();
-  gameInfo.updateGameStats(correctGuesses, totalGuesses);
-}
+const store = reactive({
+  // data
+  state: game.getState(),
+  card: game.getCurrentCard(),
+  stats: game.getGameStats(),
+
+  // computed
+  get isGameReady() {
+    return this.state === GameState.READY;
+  },
+  get isGameRevealed() {
+    return [GameState.CORRECT, GameState.INCORRECT, GameState.SKIPPED].includes(
+      this.state
+    );
+  },
+
+  // methods
+  guessCard(guess) {
+    game.guess(guess);
+    this.state = game.getState();
+    this.stats = game.getGameStats();
+  },
+  skipCard() {
+    game.skip();
+    this.state = game.getState();
+    this.stats = game.getGameStats();
+  },
+  nextCard() {
+    game.next();
+    this.state = game.getState();
+    this.card = game.getCurrentCard();
+  },
+});
+
+createApp({
+  // data
+  store,
+  guess: "",
+  opts: [
+    "Ichika",
+    "Saki",
+    "Honami",
+    "Shiho",
+    "Minori",
+    "Haruka",
+    "Airi",
+    "Shizuku",
+    "Kohane",
+    "An",
+    "Akito",
+    "Toya",
+    "Tsukasa",
+    "Emu",
+    "Nene",
+    "Rui",
+    "Kanade",
+    "Mafuyu",
+    "Ena",
+    "Mizuki",
+    "Miku",
+    "Rin",
+    "Len",
+    "Luka",
+    "MEIKO",
+    "KAITO",
+  ],
+
+  // lifecycle hooks
+  mounted() {
+    gameCanvas.drawCardCropped(this.store.card);
+  },
+
+  // methods
+  guessCard() {
+    if (this.guess.length === 0) return;
+
+    this.store.guessCard(this.guess);
+    this.guess = "";
+
+    gameCanvas.drawCard(this.store.card);
+  },
+  skipCard() {
+    this.store.skipCard();
+
+    gameCanvas.drawCard(this.store.card);
+  },
+  nextCard() {
+    this.store.nextCard();
+
+    gameCanvas.drawCardCropped(this.store.card);
+  },
+}).mount("#input-wrapper");
+
+createApp({
+  // data
+  store,
+
+  // computed
+  get status() {
+    const names = {
+      [GameState.CORRECT]: "Correct",
+      [GameState.INCORRECT]: "Incorrect",
+      [GameState.SKIPPED]: "Skipped",
+    };
+
+    return names[this.store.state] ?? this.store.state;
+  },
+  get statusColor() {
+    const colors = {
+      [GameState.CORRECT]: "green",
+      [GameState.INCORRECT]: "red",
+      [GameState.SKIPPED]: "yellow",
+    };
+
+    return colors[this.store.state] ?? "";
+  },
+  get cardCharacter() {
+    return this.store.card.character;
+  },
+  get cardName() {
+    return this.store.card.prefix;
+  },
+  get cardLink() {
+    return `https://sekai.best/card/${this.store.card.id}`;
+  },
+  get stats() {
+    const { correctGuesses, totalGuesses } = this.store.stats;
+    return `${correctGuesses}/${totalGuesses}`;
+  },
+  get advancedStats() {
+    const { correctGuesses, incorrectGuesses, skippedGuesses } =
+      this.store.stats;
+    return `(${correctGuesses} correct, ${incorrectGuesses} incorrect, ${skippedGuesses} skipped)`;
+  },
+}).mount("#info-wrapper");

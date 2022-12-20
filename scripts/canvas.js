@@ -20,7 +20,7 @@ class GameCanvas {
     dHeight
   ) {
     this.#clear();
-    this.#status.innerText = "Loading image..."
+    this.#status.innerText = "Loading image...";
 
     const ctx = this.#canvas.getContext("2d");
     const image = new Image();
@@ -53,7 +53,9 @@ class GameCanvas {
     this.#status.innerText = "";
   }
 
-  drawCard(assetBundleName, stub) {
+  drawCard(card) {
+    const { assetbundleName, stub } = card;
+
     const height = 530;
     const width = 940;
     const xOffset = 0;
@@ -63,7 +65,7 @@ class GameCanvas {
     const dHeight = (height * this.#canvas.width) / width;
 
     this.#draw(
-      assetBundleName,
+      assetbundleName,
       stub,
       width,
       height,
@@ -74,7 +76,9 @@ class GameCanvas {
     );
   }
 
-  drawCardCropped(assetBundleName, stub) {
+  drawCardCropped(card) {
+    const { assetbundleName, stub, cardRarityType } = card;
+
     const width = getRandomInt(50, 150);
     const height = getRandomInt(50, 150);
     const xOffset = getRandomInt(0, 940 - width);
@@ -84,7 +88,7 @@ class GameCanvas {
     const dHeight = height * 2;
 
     this.#draw(
-      assetBundleName,
+      assetbundleName,
       stub,
       width,
       height,

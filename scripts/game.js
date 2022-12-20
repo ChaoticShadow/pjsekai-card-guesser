@@ -1,11 +1,19 @@
 import { getRandomInt } from "./helpers.js";
 
+const GameState = {
+  READY: "game_ready",
+  CORRECT: "card_correct",
+  INCORRECT: "card_incorrect",
+  SKIPPED: "card_skipped",
+};
+
 class Game {
   #cards = [];
   #currentCard;
 
-  #totalGuesses = 0;
   #correctGuesses = 0;
+  #incorrectGuesses = 0;
+  #skippedGuesses = 0;
 
   #state;
 
@@ -51,16 +59,18 @@ class Game {
     this.#cards = data
       .filter(
         ({ cardRarityType }) =>
-          cardRarityType !== "rarity_1" && cardRarityType !== "rarity_2"
+          cardRarityType !== "rarity_1" && cardRarityType != "rarity_2"
       )
       .map(
         ({
+          id,
           characterId,
           cardRarityType,
           prefix,
           assetbundleName,
           releaseAt,
         }) => ({
+          id,
           character: Game.idToCharacterMap[characterId],
           cardRarityType,
           prefix,
@@ -75,17 +85,24 @@ class Game {
     const isCorrect =
       guess.toLowerCase().trim() === this.#currentCard.character.toLowerCase();
 
-    this.#totalGuesses++;
-    if (isCorrect) this.#correctGuesses++;
-
-    return isCorrect;
+    if (isCorrect) {
+      this.#state = GameState.CORRECT;
+      this.#correctGuesses++;
+    } else {
+      this.#state = GameState.INCORRECT;
+      this.#incorrectGuesses++;
+    }
   }
 
   skip() {
-    this.#totalGuesses++;
+    this.#state = GameState.SKIPPED;
+
+    this.#skippedGuesses++;
   }
 
   next() {
+    this.#state = GameState.READY;
+
     const numOfCards = this.#cards.length;
 
     let idx;
@@ -118,9 +135,16 @@ class Game {
   getGameStats() {
     return {
       correctGuesses: this.#correctGuesses,
-      totalGuesses: this.#totalGuesses,
+      incorrectGuesses: this.#incorrectGuesses,
+      skippedGuesses: this.#skippedGuesses,
+      totalGuesses: this.#correctGuesses + this.#incorrectGuesses + this.#skippedGuesses,
     };
+  }
+
+  getState() {
+    return this.#state;
   }
 }
 
 export default Game;
+export { GameState };
