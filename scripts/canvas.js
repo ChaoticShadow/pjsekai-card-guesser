@@ -56,8 +56,8 @@ class GameCanvas {
   drawCard(card) {
     const { assetbundleName, stub } = card;
 
-    const height = 530;
     const width = 940;
+    const height = 530;
     const xOffset = 0;
     const yOffset = 0;
 
@@ -79,9 +79,14 @@ class GameCanvas {
   drawCardCropped(card) {
     const { assetbundleName, stub, cardRarityType } = card;
 
+    let xMinOffset = 0;
+    if (cardRarityType === "rarity_2") {
+      xMinOffset = 325;
+    }
+
     const width = getRandomInt(50, 150);
     const height = getRandomInt(50, 150);
-    const xOffset = getRandomInt(0, 940 - width);
+    const xOffset = getRandomInt(xMinOffset, 940 - xMinOffset - width);
     const yOffset = getRandomInt(0, 530 - height);
 
     const dWidth = width * 2;

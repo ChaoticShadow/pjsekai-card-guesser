@@ -59,7 +59,7 @@ class Game {
     this.#cards = data
       .filter(
         ({ cardRarityType }) =>
-          cardRarityType !== "rarity_1" && cardRarityType != "rarity_2"
+          cardRarityType !== "rarity_1"
       )
       .map(
         ({
