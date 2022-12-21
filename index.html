@@ -28,19 +28,21 @@
           id="guess-input"
           list="guess-opts"
           v-model="guess"
+          @keyup.enter="guessCard" 
           :disabled="!store.isGameReady"
         />
         <datalist id="guess-opts">
           <option v-for="opt in opts" :value="opt"></option>
         </datalist>
-        <button id="guess-btn" @click="guessCard" :disabled="!store.isGameReady">
+        <button id="guess-btn" type="button" @click="guessCard" :disabled="!store.isGameReady">
           Guess
         </button>
-        <button id="skip-btn" @click="skipCard" :disabled="!store.isGameReady">
+        <button id="skip-btn" type="button" @click="skipCard" :disabled="!store.isGameReady">
           Give up
         </button>
         <button
           id="next-btn"
+          type="button"
           @click="nextCard"
           disabled
           :disabled="!store.isGameRevealed"
@@ -62,7 +64,6 @@
         </span>
         <span v-show="store.stats.totalGuesses > 0" v-cloak>{{stats}}</span>
         <span v-show="store.stats.totalGuesses > 0" v-cloak>{{advancedStats}}</span>
-        </div>
       </div>
     </div>
     <section>
