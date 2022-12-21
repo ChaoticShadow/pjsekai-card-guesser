@@ -78,6 +78,16 @@ body {
   font-weight: bold;
 }
 
+#options-wrapper {
+  margin: auto;
+}
+
+#options-wrapper > ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 1em;
+}
+
 footer p {
   text-align: center;
 }

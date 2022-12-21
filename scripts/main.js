@@ -1,9 +1,12 @@
-import Game, { GameState } from "./game.js";
+import Game, { CardRarity, GameState } from "./game.js";
 import GameCanvas from "./canvas.js";
-import { createApp, reactive } from "https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.es.js?module";
+import {
+  createApp,
+  reactive,
+} from "https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.es.js?module";
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("version").innerText = "v0.2.1";
+  document.getElementById("version").innerText = "v0.2.2";
 });
 
 const game = new Game();
@@ -149,3 +152,34 @@ createApp({
     return `(${correctGuesses} correct, ${incorrectGuesses} incorrect, ${skippedGuesses} skipped)`;
   },
 }).mount("#info-wrapper");
+
+createApp({
+  // data
+  checkboxes: [
+    { name: "allow4Star", label: "4☆", rarity: CardRarity.FOUR_STAR },
+    { name: "allowBday", label: "Birthday", rarity: CardRarity.BIRTHDAY },
+    { name: "allow3Star", label: "3☆", rarity: CardRarity.THREE_STAR },
+    { name: "allow2Star", label: "2☆", rarity: CardRarity.TWO_STAR },
+  ],
+  numChecked: 4,
+
+  // methods
+  handleChange(event, rarity) {
+    const {
+      target: { checked },
+    } = event;
+
+    if (!checked && this.numChecked <= 1) {
+      event.preventDefault();
+      event.target.checked = true;
+      return false;
+    }
+
+    game.setRarityInCardPool(rarity, checked);
+    if (checked) {
+      this.numChecked++;
+    } else {
+      this.numChecked--;
+    }
+  },
+}).mount("#options-wrapper");

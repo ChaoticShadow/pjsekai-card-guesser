@@ -1,5 +1,13 @@
 import { getRandomInt } from "./helpers.js";
 
+const CardRarity = {
+  FOUR_STAR: "rarity_4",
+  BIRTHDAY: "rarity_birthday",
+  THREE_STAR: "rarity_3",
+  TWO_STAR: "rarity_2",
+  ONE_STAR: "rarity_1",
+};
+
 const GameState = {
   READY: "game_ready",
   CORRECT: "card_correct",
@@ -8,7 +16,8 @@ const GameState = {
 };
 
 class Game {
-  #cards = [];
+  #cardsByRarity = {};
+  #cardPool = [];
   #currentCard;
 
   #correctGuesses = 0;
@@ -53,15 +62,12 @@ class Game {
     const data = await response.json();
 
     if (!Array.isArray(data)) {
-      this.#cards = [];
+      this.#cardPool = [];
     }
 
-    this.#cards = data
-      .filter(
-        ({ cardRarityType }) =>
-          cardRarityType !== "rarity_1"
-      )
-      .map(
+    data
+      .filter(({ cardRarityType }) => cardRarityType !== CardRarity.ONE_STAR)
+      .forEach(
         ({
           id,
           characterId,
@@ -69,16 +75,26 @@ class Game {
           prefix,
           assetbundleName,
           releaseAt,
-        }) => ({
-          id,
-          character: Game.idToCharacterMap[characterId],
-          cardRarityType,
-          prefix,
-          assetbundleName,
-          releaseAt,
-        })
+        }) => {
+          if (typeof this.#cardsByRarity[cardRarityType] === "undefined")
+            this.#cardsByRarity[cardRarityType] = { included: true, cards: [] };
+
+          const card = {
+            id,
+            character: Game.idToCharacterMap[characterId],
+            cardRarityType,
+            prefix,
+            assetbundleName,
+            releaseAt,
+          };
+
+          this.#cardsByRarity[cardRarityType].cards.push(card);
+          this.#cardPool.push(card);
+        }
       );
+
     this.next();
+    console.log(this.#cardsByRarity, this.#cardPool);
   }
 
   guess(guess) {
@@ -103,20 +119,20 @@ class Game {
   next() {
     this.#state = GameState.READY;
 
-    const numOfCards = this.#cards.length;
+    const numOfCards = this.#cardPool.length;
 
     let idx;
     let selectedCard;
 
     do {
       idx = Math.floor(Math.random() * numOfCards);
-      selectedCard = this.#cards[idx];
+      selectedCard = this.#cardPool[idx];
     } while (selectedCard.releaseAt > Date.now());
 
     let stub = "card_normal";
     if (
-      selectedCard.cardRarityType === "rarity_3" ||
-      selectedCard.cardRarityType === "rarity_4"
+      selectedCard.cardRarityType === CardRarity.THREE_STAR ||
+      selectedCard.cardRarityType === CardRarity.FOUR_STAR
     ) {
       const isTrained = getRandomInt(0, 2);
       stub = isTrained === 0 ? "card_normal" : "card_after_training";
@@ -137,14 +153,26 @@ class Game {
       correctGuesses: this.#correctGuesses,
       incorrectGuesses: this.#incorrectGuesses,
       skippedGuesses: this.#skippedGuesses,
-      totalGuesses: this.#correctGuesses + this.#incorrectGuesses + this.#skippedGuesses,
+      totalGuesses:
+        this.#correctGuesses + this.#incorrectGuesses + this.#skippedGuesses,
     };
   }
 
   getState() {
     return this.#state;
   }
+
+  setRarityInCardPool(rarity, inCardPool) {
+    if (typeof this.#cardsByRarity[rarity] === "undefined") return;
+
+    this.#cardsByRarity[rarity].included = inCardPool;
+
+    this.#cardPool = [];
+    Object.values(this.#cardsByRarity).forEach(({ included, cards }) => {
+      if (included) this.#cardPool = [...this.#cardPool, ...cards];
+    });
+  }
 }
 
 export default Game;
-export { GameState };
+export { CardRarity, GameState };

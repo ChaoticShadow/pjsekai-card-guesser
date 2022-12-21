@@ -28,16 +28,26 @@
           id="guess-input"
           list="guess-opts"
           v-model="guess"
-          @keyup.enter="guessCard" 
+          @keyup.enter="guessCard"
           :disabled="!store.isGameReady"
         />
         <datalist id="guess-opts">
           <option v-for="opt in opts" :value="opt"></option>
         </datalist>
-        <button id="guess-btn" type="button" @click="guessCard" :disabled="!store.isGameReady">
+        <button
+          id="guess-btn"
+          type="button"
+          @click="guessCard"
+          :disabled="!store.isGameReady"
+        >
           Guess
         </button>
-        <button id="skip-btn" type="button" @click="skipCard" :disabled="!store.isGameReady">
+        <button
+          id="skip-btn"
+          type="button"
+          @click="skipCard"
+          :disabled="!store.isGameReady"
+        >
           Give up
         </button>
         <button
@@ -63,7 +73,23 @@
           {{cardCharacter}} - <a :href="cardLink">{{cardName}}</a>
         </span>
         <span v-show="store.stats.totalGuesses > 0" v-cloak>{{stats}}</span>
-        <span v-show="store.stats.totalGuesses > 0" v-cloak>{{advancedStats}}</span>
+        <span v-show="store.stats.totalGuesses > 0" v-cloak
+          >{{advancedStats}}</span
+        >
+      </div>
+      <div id="options-wrapper" v-scope v-cloak>
+        <span>Rarities in the card pool:</span>
+        <ul>
+          <li v-for="checkbox in checkboxes" :key="checkbox.name">
+            <input
+              type="checkbox"
+              :name="checkbox.name"
+              @change="handleChange($event, checkbox.rarity)"
+              checked
+            />
+            <label :for="checkbox.name">{{checkbox.label}}</label>
+          </li>
+        </ul>
       </div>
     </div>
     <section>
