@@ -19,6 +19,7 @@
     <h1 id="header">Card Guessing League Trainer</h1>
     <img id="logo" src="assets/logo.png" />
     <div id="game-wrapper">
+      <noscript>JavaScript must be enabled to play.</noscript>
       <div id="canvas-wrapper">
         <canvas id="canvas" width="300" height="300"></canvas>
         <div id="canvas-status"></div>
@@ -90,6 +91,7 @@
             <label :for="checkbox.name">{{checkbox.label}}</label>
           </li>
         </ul>
+        <span>Cards in the current pool: {{numOfCardsInPool}}</span>
       </div>
     </div>
     <section>

@@ -172,6 +172,10 @@ class Game {
       if (included) this.#cardPool = [...this.#cardPool, ...cards];
     });
   }
+
+  getNumberOfCardsInPool() {
+    return this.#cardPool.length;
+  }
 }
 
 export default Game;

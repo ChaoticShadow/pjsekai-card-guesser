@@ -80,6 +80,7 @@ body {
 
 #options-wrapper {
   margin: auto;
+  width: 300px;
 }
 
 #options-wrapper > ul {

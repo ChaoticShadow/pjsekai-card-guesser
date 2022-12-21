@@ -6,7 +6,7 @@ import {
 } from "https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.es.js?module";
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("version").innerText = "v0.2.2";
+  document.getElementById("version").innerText = "v0.2.3";
 });
 
 const game = new Game();
@@ -162,6 +162,7 @@ createApp({
     { name: "allow2Star", label: "2☆", rarity: CardRarity.TWO_STAR },
   ],
   numChecked: 4,
+  numOfCardsInPool: game.getNumberOfCardsInPool(),
 
   // methods
   handleChange(event, rarity) {
@@ -181,5 +182,6 @@ createApp({
     } else {
       this.numChecked--;
     }
+    this.numOfCardsInPool = game.getNumberOfCardsInPool();
   },
 }).mount("#options-wrapper");
