@@ -17,7 +17,7 @@
 
   <body>
     <h1 id="header">Card Guessing League Trainer</h1>
-    <img id="logo" src="assets/logo.png" />
+    <img id="logo" src="assets/logo.webp" alt="Card Guessing League Trainer logo" />
     <div id="game-wrapper">
       <noscript>JavaScript must be enabled to play.</noscript>
       <div id="canvas-wrapper">
@@ -71,7 +71,8 @@
           {{status}}
         </span>
         <span v-show="store.isGameRevealed" v-cloak>
-          {{cardCharacter}} - <a :href="cardLink">{{cardName}}</a>
+          {{cardCharacter}} -
+          <a :href="cardLink" target="_blank">{{cardName}}</a>
         </span>
         <span v-show="store.stats.totalGuesses > 0" v-cloak>{{stats}}</span>
         <span v-show="store.stats.totalGuesses > 0" v-cloak
@@ -84,7 +85,7 @@
           <li v-for="checkbox in checkboxes" :key="checkbox.name">
             <input
               type="checkbox"
-              :name="checkbox.name"
+              :id="checkbox.name"
               @change="handleChange($event, checkbox.rarity)"
               checked
             />
@@ -127,7 +128,7 @@
       <p id="version">Version goes here.</p>
       <p>
         <a href="https://github.com/ChaoticShadow/pjsekai-card-guesser">
-          <img src="assets/github.png" />
+          <img src="assets/github.png" alt="GitHub logo" />
         </a>
       </p>
     </footer>

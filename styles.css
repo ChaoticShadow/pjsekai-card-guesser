@@ -3,7 +3,7 @@
 body {
   margin: auto;
   max-width: 720px;
-  background-image: url("./assets/background.jpg");
+  background-image: url("./assets/background.webp");
   background-repeat: repeat;
   color: lightgrey;
   font-family: "Lexend Deca";
@@ -85,8 +85,12 @@ body {
 
 #options-wrapper > ul {
   list-style: none;
-  margin: 0;
+  margin: 0.5em 0;
   padding-left: 1em;
+}
+
+#options-wrapper > ul li {
+  line-height: 1.75em;
 }
 
 footer p {
@@ -95,4 +99,8 @@ footer p {
 
 [v-cloak] {
   display: none;
+}
+
+a {
+  color: lightseagreen;
 }
