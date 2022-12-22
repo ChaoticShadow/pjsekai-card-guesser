@@ -11,7 +11,7 @@ class GameCanvas {
 
   #draw(
     assetBundleName,
-    stub,
+    trained,
     width,
     height,
     xOffset,
@@ -19,6 +19,8 @@ class GameCanvas {
     dWidth,
     dHeight
   ) {
+    const stub = trained ? "card_after_training" : "card_normal";
+
     this.#clear();
     this.#status.innerText = "Loading image...";
 
@@ -44,7 +46,7 @@ class GameCanvas {
       { once: true }
     );
 
-    image.src = `https://assets.pjsek.ai/file/pjsekai-assets/startapp/character/member_small/${assetBundleName}/${stub}.png`;
+    image.src = `https://storage.sekai.best/sekai-assets/character/member_small/${assetBundleName}_rip/${stub}.webp`;
   }
 
   #clear() {

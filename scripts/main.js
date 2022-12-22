@@ -6,7 +6,7 @@ import {
 } from "https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.es.js?module";
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("version").innerText = "v0.2.3";
+  document.getElementById("version").innerText = "v0.2.4";
 });
 
 const game = new Game();

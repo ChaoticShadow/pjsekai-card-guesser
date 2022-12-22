@@ -94,7 +94,6 @@ class Game {
       );
 
     this.next();
-    console.log(this.#cardsByRarity, this.#cardPool);
   }
 
   guess(guess) {
@@ -129,18 +128,18 @@ class Game {
       selectedCard = this.#cardPool[idx];
     } while (selectedCard.releaseAt > Date.now());
 
-    let stub = "card_normal";
+    let trained = false;
     if (
       selectedCard.cardRarityType === CardRarity.THREE_STAR ||
       selectedCard.cardRarityType === CardRarity.FOUR_STAR
     ) {
       const isTrained = getRandomInt(0, 2);
-      stub = isTrained === 0 ? "card_normal" : "card_after_training";
+      trained = isTrained === 0;
     }
 
     this.#currentCard = {
       ...selectedCard,
-      stub,
+      trained,
     };
   }
 
